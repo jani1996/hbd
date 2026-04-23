@@ -152,6 +152,7 @@
             ctx.restore();
         },
         drawText: function() {
+            if (this.clicked) return;
             var ctx = this.tree.ctx, heart = this.heart;
             var point = heart.point, color = heart.color,
                 scale = heart.scale;
@@ -168,15 +169,15 @@
             ctx.moveTo(0, 0);
             ctx.scale(0.75, 0.75);
             ctx.font = "12px,Verdana";
-            ctx.fillText("Click Me:) ", 30, -5);
-            ctx.fillText("Birthday Queen !", 28, 10);
+            ctx.fillText("Click Here:) ", 30, -5);
+            ctx.fillText("Birthday Girl !", 28, 10);
             ctx.restore();
         },
         clear: function() {
             var ctx = this.tree.ctx, cirle = this.cirle;
-            var point = cirle.point, scale = cirle.scale, radius = 26;
-            var w = h = (radius * scale);
-            ctx.clearRect(point.x - w, point.y - h, 4 * w, 4 * h);
+            var point = cirle.point, scale = cirle.scale;
+            // wide enough to erase the dash line and text too
+            ctx.clearRect(point.x - 60, point.y - 60, 300, 120);
         },
         hover: function(x, y) {
             var ctx = this.tree.ctx;
