@@ -152,7 +152,20 @@
             ctx.restore();
         },
         drawText: function() {
-            // no text label - heart is self-explanatory
+            var ctx = this.tree.ctx, heart = this.heart;
+            var point = heart.point, color = heart.color, 
+                scale = heart.scale;
+            ctx.save();
+            ctx.fillStyle = color;
+            ctx.shadowColor = 'rgba(255,20,147,0.8)';
+            ctx.shadowBlur = 6;
+            ctx.translate(point.x, point.y);
+            ctx.scale(scale, scale);
+            ctx.scale(0.75, 0.75);
+            ctx.font = "bold 13px Georgia";
+            ctx.fillText("Click here :)", 10, 5);
+            ctx.fillText("Birthday Girl!", 10, 22);
+            ctx.restore();
         },
         clear: function() {
             var ctx = this.tree.ctx, cirle = this.cirle;
