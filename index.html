@@ -397,18 +397,20 @@
         document.getElementById('waiting').classList.add('hidden');
       }
 
+      // 30-second countdown for testing
+      var countdown = 30;
+
       function checkMidnight() {
         var now = new Date();
         var h = now.getHours();
         var m = now.getMinutes();
         var s = now.getSeconds();
 
-        // update clock display
-        document.getElementById('digital-clock').textContent =
-          pad(h) + ':' + pad(m) + ':' + pad(s);
+        // update clock display with countdown
+        document.getElementById('digital-clock').textContent = '00:00:' + pad(countdown);
 
-        // at exactly midnight (00:00:00) reveal birthday page
-        if (h === 0 && m === 0 && s === 0) {
+        countdown--;
+        if (countdown < 0) {
           revealBirthday();
         }
       }
