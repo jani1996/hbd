@@ -156,20 +156,15 @@
             var point = heart.point, color = heart.color, 
                 scale = heart.scale;
             ctx.save();
-            ctx.strokeStyle = color;
             ctx.fillStyle = color;
+            ctx.shadowColor = 'rgba(255,20,147,0.7)';
+            ctx.shadowBlur = 8;
             ctx.translate(point.x, point.y);
             ctx.scale(scale, scale);
-            ctx.moveTo(0, 0);
-    	    ctx.lineTo(15, 15);
-    	    ctx.lineTo(130, 15);
-            ctx.stroke();
-
-            ctx.moveTo(0, 0);
             ctx.scale(0.75, 0.75);
-            ctx.font = "12px,Verdana"; // 字号肿么没有用? (ˉ(∞)ˉ)
-            ctx.fillText("Click here:) ", 30, -5);
-            ctx.fillText("Birthday Girl !", 28, 10);
+            ctx.font = "bold italic 13px Georgia";
+            ctx.fillText("✨ Click Me! ✨", 10, 5);
+            ctx.fillText("🎂 Birthday Girl!", 10, 22);
             ctx.restore();
         },
         clear: function() {
