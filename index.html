@@ -456,7 +456,9 @@
 
         var textAnimate = eval(
           Jscex.compile("async", function () {
-            $("#code").show().typewriter();
+            $("#code").show().typewriter(function() {
+              showCelebration();
+            });
           })
         );
 
@@ -467,8 +469,6 @@
             $await(flowAnimate());
             $await(moveAnimate());
             textAnimate().start();
-            // show celebration page after typewriter (allow ~16s for full poem)
-            setTimeout(function() { showCelebration(); }, 16000);
           })
         );
 
