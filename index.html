@@ -19,7 +19,8 @@
         font-family: 'Fredoka One', cursive;
         overflow: hidden;
       }
-      #waiting.hidden { display: none; }
+      #waiting { transition: opacity 1s ease; }
+      #waiting.hidden { opacity: 0; pointer-events: none; }
 
       /* floating stars */
       #waiting .star {
@@ -296,6 +297,8 @@
         var seed = tree.seed;
         var foot = tree.footer;
         var hold = 1;
+        window._seed = seed;
+        window._holdRef = function(val) { if (val !== undefined) hold = val; return hold; };
 
         canvas
           .click(function (e) {
@@ -404,7 +407,8 @@
 
       // if #test is in URL hash, skip straight to birthday page
       if (window.location.hash === '#test') {
-        document.getElementById('waiting').classList.add('hidden');
+        var w = document.getElementById('waiting');
+        w.style.display = 'none';
       }
 
       // 30-second countdown for testing
@@ -426,15 +430,20 @@
       }
 
       function revealBirthday() {
-        document.getElementById('waiting').classList.add('hidden');
-        // auto-click the heart to start the animation
+        var waiting = document.getElementById('waiting');
+        waiting.classList.add('hidden');
+        // after fade completes, remove from layout
+        setTimeout(function() { waiting.style.display = 'none'; }, 1100);
         var audio = document.getElementById('myAudio');
-        if (audio) audio.play();
-        if (typeof seed !== 'undefined') {
-          seed.clicked = true;
-          seed.clearDash();
-          hold = 0;
-        }
+        if (audio) { try { audio.play(); } catch(e) {} }
+        // give the animation loop a moment to be ready, then release hold
+        setTimeout(function() {
+          if (window._seed) {
+            window._seed.clicked = true;
+            window._seed.clearDash();
+          }
+          if (window._holdRef) window._holdRef(0);
+        }, 300);
       }
 
       // start clock ticking
