@@ -202,6 +202,7 @@
             y = e.pageY - offset.top;
             if (seed.hover(x, y)) {
               seed.clicked = true;
+              seed.clearDash();
               hold = 0;
               canvas.unbind("click");
               canvas.unbind("mousemove");

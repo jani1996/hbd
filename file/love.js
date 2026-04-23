@@ -173,6 +173,13 @@
             ctx.fillText("Birthday Girl !", 28, 10);
             ctx.restore();
         },
+        clearDash: function() {
+            var ctx = this.tree.ctx;
+            var point = this.heart.point;
+            var scale = this.heart.scale;
+            // clear a large area around the heart to wipe dash + text completely
+            ctx.clearRect(point.x - 10, point.y - 10, 300 * scale, 80 * scale);
+        },
         clear: function() {
             var ctx = this.tree.ctx, cirle = this.cirle;
             var point = cirle.point, scale = cirle.scale;
