@@ -392,8 +392,8 @@
       // ── Digital clock + midnight auto-reveal ──
       function pad(n) { return n < 10 ? '0' + n : n; }
 
-      // if ?test is in URL, skip straight to birthday page
-      if (window.location.search.indexOf('test') !== -1) {
+      // if #test is in URL hash, skip straight to birthday page
+      if (window.location.hash === '#test') {
         document.getElementById('waiting').classList.add('hidden');
       }
 
