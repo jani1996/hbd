@@ -405,58 +405,49 @@
       // ── Digital clock + midnight auto-reveal ──
       function pad(n) { return n < 10 ? '0' + n : n; }
 
-      // if #test is in URL hash, skip straight to birthday page
-      if (window.location.hash === '#test') {
-        var w = document.getElementById('waiting');
-        w.style.display = 'none';
-      }
-
-      // 30-second countdown for testing
-      var countdown = 30;
-
-      function checkMidnight() {
-        var now = new Date();
-        var h = now.getHours();
-        var m = now.getMinutes();
-        var s = now.getSeconds();
-
-        // update clock display with countdown
-        document.getElementById('digital-clock').textContent = '00:00:' + pad(countdown);
-
-        countdown--;
-        if (countdown < 0) {
-          revealBirthday();
-        }
-      }
+      var _revealed = false;
+      var _clockInterval = null;
 
       function revealBirthday() {
+        if (_revealed) return;
+        _revealed = true;
+        if (_clockInterval) { clearInterval(_clockInterval); _clockInterval = null; }
+
         var waiting = document.getElementById('waiting');
         waiting.classList.add('hidden');
-        // after fade completes, remove from layout
         setTimeout(function() { waiting.style.display = 'none'; }, 1100);
+
         var audio = document.getElementById('myAudio');
         if (audio) { try { audio.play(); } catch(e) {} }
-        // give the animation loop a moment to be ready, then release hold
+
         setTimeout(function() {
           if (window._seed) {
             window._seed.clicked = true;
             window._seed.clearDash();
           }
           if (window._holdRef) window._holdRef(0);
-        }, 300);
+        }, 400);
       }
 
-      // start clock ticking
-      setInterval(checkMidnight, 1000);
-      checkMidnight(); // run once immediately
+      // 30-second countdown (testing mode)
+      var countdown = 30;
 
-      // if it's already past midnight (birthday day), skip the wait screen
-      (function() {
-        var now = new Date();
-        if (now.getHours() === 0 && now.getMinutes() === 0) {
+      function tickClock() {
+        document.getElementById('digital-clock').textContent = '00:00:' + pad(countdown);
+        if (countdown <= 0) {
           revealBirthday();
+          return;
         }
-      })();
+        countdown--;
+      }
+
+      // if #test hash → skip waiting screen entirely
+      if (window.location.hash === '#test') {
+        document.getElementById('waiting').style.display = 'none';
+      } else {
+        tickClock(); // show initial value immediately
+        _clockInterval = setInterval(tickClock, 1000);
+      }
     </script>
   </body>
 </html>
