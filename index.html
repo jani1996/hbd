@@ -392,6 +392,11 @@
       // ── Digital clock + midnight auto-reveal ──
       function pad(n) { return n < 10 ? '0' + n : n; }
 
+      // if ?test is in URL, skip straight to birthday page
+      if (window.location.search.indexOf('test') !== -1) {
+        document.getElementById('waiting').classList.add('hidden');
+      }
+
       function checkMidnight() {
         var now = new Date();
         var h = now.getHours();
