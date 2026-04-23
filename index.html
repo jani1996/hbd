@@ -189,6 +189,7 @@
           <div id="code">
             <span class="say say-title">Happy Birthday, beautiful soul 🌸</span>
             <p class="say-body">May today wrap you in warmth, fill your heart with gentle happiness, and leave you with memories that feel like little pieces of magic ✨<br /><br />You deserve slow mornings, loud laughter, unexpected love, and dreams that come true quietly 💗<br /><br />Just stay exactly who you are 🌸 &mdash; that's already something rare. 🌙</p>
+            <span class="say say-title" style="margin-top:18px;">Happy Birthday Shruti 🎂 🌸💖🌸💖🌸</span>
           </div>
         </div>
         <div id="clock-box">
@@ -416,37 +417,43 @@
         var waiting = document.getElementById('waiting');
         waiting.classList.add('hidden');
         setTimeout(function() { waiting.style.display = 'none'; }, 1100);
-
-        var audio = document.getElementById('myAudio');
-        if (audio) { try { audio.play(); } catch(e) {} }
-
-        setTimeout(function() {
-          if (window._seed) {
-            window._seed.clicked = true;
-            window._seed.clearDash();
-          }
-          if (window._holdRef) window._holdRef(0);
-        }, 400);
+        // do NOT auto-click heart — user should click it themselves
       }
 
-      // 30-second countdown (testing mode)
-      var countdown = 30;
+      var hash = window.location.hash;
 
-      function tickClock() {
-        document.getElementById('digital-clock').textContent = '00:00:' + pad(countdown);
-        if (countdown <= 0) {
-          revealBirthday();
-          return;
+      if (hash === '#test') {
+        // ── 30-second countdown mode ──
+        var countdown = 30;
+        function tickTest() {
+          document.getElementById('digital-clock').textContent = '00:00:' + pad(countdown);
+          if (countdown <= 0) { revealBirthday(); return; }
+          countdown--;
         }
-        countdown--;
-      }
+        tickTest();
+        _clockInterval = setInterval(tickTest, 1000);
 
-      // if #test hash → skip waiting screen entirely
-      if (window.location.hash === '#test') {
-        document.getElementById('waiting').style.display = 'none';
       } else {
-        tickClock(); // show initial value immediately
-        _clockInterval = setInterval(tickClock, 1000);
+        // ── Real countdown to midnight IST April 24, 2026 ──
+        // Midnight IST (UTC+5:30) = April 23 2026 18:30:00 UTC
+        var target = new Date('2026-04-23T18:30:00Z').getTime();
+
+        function tickReal() {
+          var now = Date.now();
+          var diff = target - now;
+          if (diff <= 0) {
+            document.getElementById('digital-clock').textContent = '00:00:00';
+            revealBirthday();
+            return;
+          }
+          var totalSec = Math.floor(diff / 1000);
+          var h = Math.floor(totalSec / 3600);
+          var m = Math.floor((totalSec % 3600) / 60);
+          var s = totalSec % 60;
+          document.getElementById('digital-clock').textContent = pad(h) + ':' + pad(m) + ':' + pad(s);
+        }
+        tickReal();
+        _clockInterval = setInterval(tickReal, 1000);
       }
     </script>
   </body>
